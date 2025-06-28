@@ -1,7 +1,7 @@
-FROM ruby:latest
+FROM ruby:3.1
 ENV DEBIAN_FRONTEND noninteractive
 
-Label MAINTAINER Amir Pourmand
+# Label MAINTAINER Amir Pourmand
 
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     locales \
@@ -9,7 +9,12 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     build-essential \
     zlib1g-dev \
     jupyter-nbconvert \
-    inotify-tools procps && \
+    inotify-tools procps \
+    libxml2-dev \
+    libxslt1-dev \
+    libvips-dev \
+    nodejs \
+    curl &&\
     apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 
@@ -31,6 +36,8 @@ WORKDIR /srv/jekyll
 
 # install jekyll and dependencies
 RUN gem install jekyll bundler
+
+RUN gem install bundler:2.6.9
 
 RUN bundle install --no-cache
 # && rm -rf /var/lib/gems/3.1.0/cache
